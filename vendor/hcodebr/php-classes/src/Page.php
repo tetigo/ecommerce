@@ -12,21 +12,27 @@ class Page{
 		"data"=>array()
 	);
 
-	public function __construct($opts = array()){
+	public function __construct($opts = array(), $tpl_dir = "views/"){
 
 		$this->options = array_merge($this->defaults, $opts);
 
 		$caminho = $_SERVER['DOCUMENT_ROOT'] . substr($_SERVER['REQUEST_URI'], 1);
+
+		if ($tpl_dir == "views/admin/"){
+			$teste = explode('/', $caminho);
+			array_pop($teste);
+			array_pop($teste);
+			$teste = implode('/', $teste) . '/';
+			$caminho = $teste;
+		}
+
 		$config = array(
 
-			"tpl_dir"       => $caminho . "views/",
+			"tpl_dir"       => $caminho . $tpl_dir,
 			"cache_dir"     => $caminho . "views-cache/",
-		"debug"         => false
+			"debug"         => true,
+			"templates.path" => $caminho
 		);
-
-		echo "<hr>";
-		echo $config['tpl_dir'];
-		echo "<hr>\r\n\r\n";
 
 		Tpl::configure( $config );
 
